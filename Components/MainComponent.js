@@ -5,12 +5,30 @@ import { View,Platform } from 'react-native';
 import Home from './HomeComponent'
 import { createStackNavigator, createDrawerNavigator } from 'react-navigation';
 import { Icon } from 'react-native-elements';
+import Contact from './ContactComponent'
 
 const MenuNavigator = createStackNavigator({
     Menu: { screen : Menu},
     Dishdetail : {screen : Dishdetail }
 },{
     initialRouteName: 'Menu',
+    navigationOptions: {
+      headerStyle:{
+        backgroundColor: '#512DAB'
+      },
+      headerTintColor:'#fff',
+      headerTitleStyle: {
+        color: '#fff'
+      }
+
+    }
+})
+
+const ContactNavigator = createStackNavigator({
+    Contact: { screen : Contact},
+
+},{
+    initialRouteName: 'Contact',
     navigationOptions: {
       headerStyle:{
         backgroundColor: '#512DAB'
@@ -46,6 +64,13 @@ const MainNavigator = createDrawerNavigator(
       navigationOptions: {
         title: 'Home',
         drawerLabel: 'Home'
+      }
+    },
+    Contact : {
+      screen:ContactNavigator,
+      navigationOptions: {
+        title: 'Contact Us',
+        drawerLabel: 'Contact Us'
       }
     },
     Menu:
