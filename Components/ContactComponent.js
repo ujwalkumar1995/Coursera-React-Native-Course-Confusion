@@ -3,9 +3,7 @@ import { View, Text, FlatList } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import {Card} from 'react-native-elements'
 
-
-
-  function RenderItem()
+function RenderItem()
   {
       return(
         <Card>
@@ -19,7 +17,7 @@ import {Card} from 'react-native-elements'
 
         <View
   style={{
-    marginTop : 5,
+    marginBottom : 5,
     borderBottomColor: 'black',
     borderBottomWidth: 1,
   }}
@@ -38,15 +36,13 @@ import {Card} from 'react-native-elements'
   }
 class Contact extends React.Component{
 
-
-
-render()
-{
-  return (
-    <RenderItem>
-    </RenderItem>
-  )
-}
+  render()
+  {
+    return (
+      <RenderItem>
+      </RenderItem>
+    )
+  }
 
 }
 
