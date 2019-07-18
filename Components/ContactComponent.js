@@ -36,6 +36,9 @@ function RenderItem()
   }
 class Contact extends React.Component{
 
+  static navigationOptions = {
+      title: 'Contact Us'
+  };
   render()
   {
     return (

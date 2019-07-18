@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, FlatList, ScrollView } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import {Card} from 'react-native-elements'
-import {LEADERS} from '../Shared/leaders'
+import {LEADERS} from '../shared/leaders'
 
 
 class About extends React.Component{
@@ -15,7 +15,9 @@ class About extends React.Component{
       leaders : LEADERS
     }
   }
-
+  static navigationOptions = {
+      title: 'About Us'
+  };
 render()
   {
   const renderMenuItem = ({item, index}) => {
@@ -39,7 +41,7 @@ render()
   };
 
   return (
-              <View>
+
               <ScrollView>
               <History>
               </History>
@@ -53,7 +55,7 @@ render()
 
               </Card>
               </ScrollView>
-              </View>
+            
 
 
   )
