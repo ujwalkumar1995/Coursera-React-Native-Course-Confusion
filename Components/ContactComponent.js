@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, FlatList } from 'react-native';
-import { ListItem } from 'react-native-elements';
-import {Card} from 'react-native-elements'
+import { ListItem, Card } from 'react-native-elements';
+import * as Animatable from 'react-native-animatable';
+
 
 function RenderItem()
   {
@@ -42,8 +43,10 @@ class Contact extends React.Component{
   render()
   {
     return (
+      <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
       <RenderItem>
       </RenderItem>
+      </Animatable.View>
     )
   }
 

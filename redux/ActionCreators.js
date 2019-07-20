@@ -3,6 +3,10 @@ import { baseUrl } from '../shared/baseUrl';
 
 
 
+export const deleteFavorite = (dishId) => ({
+    type: ActionTypes.DELETE_FAVORITE,
+    payload: dishId
+});
 
 export const postComment = (dishId, rating, author, comment) => (dispatch) => {
 
