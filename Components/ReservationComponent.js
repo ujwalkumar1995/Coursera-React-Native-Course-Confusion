@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Alert} from 'react-native';
 import { Card } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker'
 import {  Modal } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 
 class Reservation extends Component {
 
@@ -22,13 +23,37 @@ class Reservation extends Component {
         title: 'Reserve Table',
     };
 
-    toggleModal() {
+  /*  toggleModal() {
         this.setState({showModal: !this.state.showModal});
+    }*/
+
+
+    resetReservationForm() {
+
+      this.setState({
+          guests: 1,
+          smoking: false,
+          date: '',
+
+      })
+
     }
+
 
     handleReservation() {
         console.log(JSON.stringify(this.state));
-        this.toggleModal();
+
+        Alert.alert(
+            'Your Reservation OK?',
+            'Number of Guests: '+ this.state.guests + '\nSmoking? ' + this.state.smoking + '\nDate and Time: '+this.state.date,
+            [
+            {text: 'Cancel', onPress: () => this.resetReservationForm(), style: 'cancel'},
+            {text: 'OK', onPress: () => this.resetReservationForm(), style: 'ok'}
+            ],
+            { cancelable: false }
+        )
+
+        //this.toggleModal();
     }
 
     resetForm() {
@@ -43,6 +68,7 @@ class Reservation extends Component {
     render() {
         return(
             <ScrollView>
+            <Animatable.View animation="zoomInUp" duration={2000} delay={1000}>
                 <View style={styles.formRow}>
                 <Text style={styles.formLabel}>Number of Guests</Text>
                 <Picker
@@ -87,7 +113,7 @@ class Reservation extends Component {
                     dateInput: {
                         marginLeft: 36
                     }
-                    // ... You can check the source to find the other keys.
+
                     }}
                     onDateChange={(date) => {this.setState({date: date})}}
                 />
@@ -100,24 +126,9 @@ class Reservation extends Component {
                     accessibilityLabel="Learn more about this purple button"
                     />
                 </View>
-                <Modal animationType = {"slide"} transparent = {false}
-                    visible = {this.state.showModal}
-                    onDismiss = {() => this.toggleModal() }
-                    onRequestClose = {() => this.toggleModal() }>
-                    <View style = {styles.modal}>
-                        <Text style = {styles.modalTitle}>Your Reservation</Text>
-                        <Text style = {styles.modalText}>Number of Guests: {this.state.guests}</Text>
-                        <Text style = {styles.modalText}>Smoking?: {this.state.smoking ? 'Yes' : 'No'}</Text>
-                        <Text style = {styles.modalText}>Date and Time: {this.state.date}</Text>
+                </Animatable.View>
 
-                        <Button
-                            onPress = {() =>{this.toggleModal(); this.resetForm();}}
-                            color="#512DA8"
-                            title="Close"
-                            />
-                    </View>
-                </Modal>
-                
+
             </ScrollView>
         );
     }
