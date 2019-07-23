@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,Modal, View, ScrollView , FlatList, StyleSheet,Button,PanResponder,Alert} from 'react-native';
+import { Text,Modal, View, ScrollView , FlatList, StyleSheet,Button,PanResponder,Alert, Share} from 'react-native';
 import { Card , Icon, Input,Rating} from 'react-native-elements';
 import {connect} from 'react-redux'
 import {baseUrl} from '../shared/baseUrl'
@@ -14,6 +14,18 @@ const mapStateToProps = state => {
       showModal:false
     }
   }
+
+
+  const shareDish = (title, message, url) => {
+          Share.share({
+              title: title,
+              message: title + ': ' + message + ' ' + url,
+              url: url
+          },{
+              dialogTitle: 'Share ' + title
+          })
+      }
+
 
   const mapDispatchToProps = dispatch => ({
     postFavorite: (dishId) => dispatch(postFavorite(dishId)),
@@ -105,9 +117,18 @@ function RenderDish(props) {
                             reverse
                             name='pencil'
                             type='font-awesome'
-                            color='#00ccff'
+                            color='#512DA8'
                             onPress={() => {props.openCommentModal()}}
                             />
+
+                         <Icon
+                                raised
+                                reverse
+                                name='share'
+                                type='font-awesome'
+                                color='#51D2A8'
+                                style={styles.cardItem}
+                                onPress={() => shareDish(dish.name, dish.description, baseUrl + dish.image)} />
                             </View>
                 </Card>
                 </Animatable.View>
