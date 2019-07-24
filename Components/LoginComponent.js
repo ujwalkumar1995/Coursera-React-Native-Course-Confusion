@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import {View, StyleSheet, Text, ScrollView, Image } from 'react-native';
 import { Input, CheckBox, Button, Icon  } from 'react-native-elements';
-import { SecureStore, Permissions, ImagePicker} from 'expo';
+import {  SecureStore, Camera, Permissions, ImagePicker, Asset, ImageManipulator} from 'expo';
 import { createBottomTabNavigator } from 'react-navigation';
 import { baseUrl } from '../shared/baseUrl';
+
 
 class LoginTab extends Component {
 
@@ -58,6 +59,7 @@ class LoginTab extends Component {
                 <Input
                     placeholder="Username"
                     leftIcon={{ type: 'font-awesome', name: 'user-o' }}
+                    leftIconContainerStyle={{ marginRight: 6 }}
                     onChangeText={(username) => this.setState({username})}
                     value={this.state.username}
                     containerStyle={styles.formInput}
@@ -65,6 +67,7 @@ class LoginTab extends Component {
                 <Input
                     placeholder="Password"
                     leftIcon={{ type: 'font-awesome', name: 'key' }}
+                    leftIconContainerStyle={{ marginRight: 6 }}
                     onChangeText={(password) => this.setState({password})}
                     value={this.state.password}
                     containerStyle={styles.formInput}
@@ -132,21 +135,50 @@ class RegisterTab extends Component {
         }
     }
 
-    getImageFromCamera = async () => {
-        const cameraPermission = await Permissions.askAsync(Permissions.CAMERA);
-        const cameraRollPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+   getImageFromCamera = async () => {
+       const cameraPermission = await Permissions.askAsync(Permissions.CAMERA);
+       const cameraRollPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
-        if (cameraPermission.status === 'granted' && cameraRollPermission.status === 'granted') {
-            let capturedImage = await ImagePicker.launchCameraAsync({
-                allowsEditing: true,
-                aspect: [4, 3],
-            });
-            if (!capturedImage.cancelled) {
-                console.log(capturedImage);
-                this.setState({imageUrl: capturedImage.uri });
-            }
-        }
+       if (cameraPermission.status === 'granted' && cameraRollPermission.status === 'granted') {
+           let capturedImage = await ImagePicker.launchCameraAsync({
+               allowsEditing: true,
+               aspect: [4, 3],
+           });
+           if (!capturedImage.cancelled) {
+               this.processImage(capturedImage.uri);
+           }
+       }
 
+   }
+
+   getImageFromGallery = async() =>{
+
+     const cameraPermission = await Permissions.askAsync(Permissions.CAMERA);
+     const cameraRollPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+     if (cameraPermission.status === 'granted' && cameraRollPermission.status === 'granted') {
+         let pickedImage = await ImagePicker.launchImageLibraryAsync({
+             mediaTypes: ImagePicker.MediaTypeOptions.Images,
+             allowsEditing: true,
+             aspect: [4, 3],
+         });
+         if (!pickedImage.cancelled) {
+             this.processImage(pickedImage.uri);
+         }
+     }
+
+   }
+
+  
+    processImage = async (imageUri) => {
+        let processedImage = await ImageManipulator.manipulateAsync(
+            imageUri,
+            [
+                { resize: { width: 400 } }
+            ],
+            { format: 'png' }
+        );
+        this.setState({ imageUrl: processedImage.uri });
     }
 
     static navigationOptions = {
@@ -182,10 +214,16 @@ class RegisterTab extends Component {
                         title="Camera"
                         onPress={this.getImageFromCamera}
                         />
+
+                    <Button
+                        title="Gallery"
+                        onPress={this.getImageFromGallery}
+                        />
                 </View>
                 <Input
                     placeholder="Username"
                     leftIcon={{ type: 'font-awesome', name: 'user-o' }}
+                    leftIconContainerStyle={{ marginRight: 6 }}
                     onChangeText={(username) => this.setState({username})}
                     value={this.state.username}
                     containerStyle={styles.formInput}
@@ -193,6 +231,7 @@ class RegisterTab extends Component {
                 <Input
                     placeholder="Password"
                     leftIcon={{ type: 'font-awesome', name: 'key' }}
+                    leftIconContainerStyle={{ marginRight: 6 }}
                     onChangeText={(password) => this.setState({password})}
                     value={this.state.password}
                     containerStyle={styles.formInput}
@@ -200,6 +239,7 @@ class RegisterTab extends Component {
                 <Input
                     placeholder="First Name"
                     leftIcon={{ type: 'font-awesome', name: 'user-o' }}
+                    leftIconContainerStyle={{ marginRight: 6 }}
                     onChangeText={(lastname) => this.setState({firstname})}
                     value={this.state.firstname}
                     containerStyle={styles.formInput}
@@ -207,6 +247,7 @@ class RegisterTab extends Component {
                 <Input
                     placeholder="Last Name"
                     leftIcon={{ type: 'font-awesome', name: 'user-o' }}
+                    leftIconContainerStyle={{ marginRight: 6 }}
                     onChangeText={(lastname) => this.setState({lastname})}
                     value={this.state.lastname}
                     containerStyle={styles.formInput}
@@ -214,6 +255,7 @@ class RegisterTab extends Component {
                 <Input
                     placeholder="Email"
                     leftIcon={{ type: 'font-awesome', name: 'envelope-o' }}
+                    leftIconContainerStyle={{ marginRight: 6 }}
                     onChangeText={(email) => this.setState({email})}
                     value={this.state.email}
                     containerStyle={styles.formInput}
@@ -255,7 +297,7 @@ const styles = StyleSheet.create({
     imageContainer: {
         flex: 1,
         flexDirection: 'row',
-        //margin: 20
+        justifyContent:'space-between'
     },
     image: {
       margin: 10,
@@ -263,7 +305,7 @@ const styles = StyleSheet.create({
       height: 60
     },
     formInput: {
-        //margin: 20
+
     },
     formCheckbox: {
         margin: 20,

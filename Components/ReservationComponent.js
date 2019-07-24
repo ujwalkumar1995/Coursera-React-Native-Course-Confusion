@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Alert} from 'react-native';
+import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Alert, ToastAndroid} from 'react-native';
 import { Card } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker'
 import {  Modal } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import { Permissions, Notifications } from 'expo';
+import { Permissions, Notifications, Calendar } from 'expo';
 
 class Reservation extends Component {
 
@@ -66,6 +66,30 @@ class Reservation extends Component {
   }
 
 
+  obtainCalendarPermission = async () => {
+        const calanderPermission = await Permissions.askAsync(Permissions.CALENDAR);
+        if (calanderPermission.status === 'granted') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+  addReservationToCalendar = async (date) => {
+       const id=Calendar.createEventAsync(Calendar.DEFAULT,
+           {
+               title: 'Con Fusion Table Reservation',
+               startDate: new Date(Date.parse(date)),
+               endDate: new Date(Date.parse(date) + (2 * 60 * 60 * 1000)),
+              // timeZone: 'Asia/Hong_Kong',
+               location: '121, Clear Water Bay Road, Clear Water Bay, Kowloon, Hong Kong'
+
+           })
+           ToastAndroid.show('Initial Network Connectivity Type: '+id,ToastAndroid.LONG)
+   }
+
+
     handleReservation() {
         console.log(JSON.stringify(this.state));
 
@@ -76,6 +100,12 @@ class Reservation extends Component {
             {text: 'Cancel', onPress: () => this.resetReservationForm(), style: 'cancel'},
             {text: 'OK', onPress: () => {
               this.presentLocalNotification(this.state.date)
+              if (this.state.date) {
+                           const calendarPermission = this.obtainCalendarPermission();
+                           if (calendarPermission) {
+                               this.addReservationToCalendar(this.state.date);
+                           }
+                       }
               this.resetReservationForm()
             }}
             ],
