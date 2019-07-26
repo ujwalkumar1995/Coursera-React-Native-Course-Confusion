@@ -1,9 +1,16 @@
 {
   "expo": {
-    "name": "TestApp",
-    "slug": "confusion",
+    "name": "Confusion",
+    "slug": "Confusion",
     "privacy": "public",
+    "icon": "./icon.png",
     "sdkVersion": "33.0.0",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "net.food.confusion.confusion"
+    },
     "platforms": [
       "ios",
       "android",
@@ -11,7 +18,6 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -23,8 +29,6 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": true
-    }
+    "description": "Restaurant application built as a part of coursera react native course. "
   }
 }

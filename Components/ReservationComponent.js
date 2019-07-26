@@ -4,7 +4,9 @@ import { Card } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker'
 import {  Modal } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import { Permissions, Notifications, Calendar } from 'expo';
+import { Notifications} from 'expo';
+import * as Permissions from 'expo-permissions'
+import * as Calendar from 'expo-calendar'
 
 class Reservation extends Component {
 
@@ -77,16 +79,18 @@ class Reservation extends Component {
 
 
   addReservationToCalendar = async (date) => {
-       const id=Calendar.createEventAsync(Calendar.DEFAULT,
+       Calendar.createEventAsync(Calendar.DEFAULT,
            {
                title: 'Con Fusion Table Reservation',
                startDate: new Date(Date.parse(date)),
                endDate: new Date(Date.parse(date) + (2 * 60 * 60 * 1000)),
-              // timeZone: 'Asia/Hong_Kong',
+               timeZone: 'Asia/Hong_Kong',
                location: '121, Clear Water Bay Road, Clear Water Bay, Kowloon, Hong Kong'
 
            })
-           ToastAndroid.show('Initial Network Connectivity Type: '+id,ToastAndroid.LONG)
+           ToastAndroid.show('Initial Network Connectivity Type: ',
+
+               ToastAndroid.LONG)
    }
 
 
